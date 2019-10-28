@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+message Query {
+    Schema schema = 1; // table and schema
+
+    map<string, Identifiers> instruments_by_server = 2; // instruments per server
+    TimeReference start = 3;
+    TimeReference end = 4;
+
+    message TimeReference {
+        oneof is {
+            bool live = 1;
+            uint64 epoch_ns = 2;
+        }
+    }
+
+    // Specify the identifiers by instrument type / KDB shard
+    message Identifiers {
+        repeated string codes = 1;
+    }
+
+    // schema definition
+    message Schema {
+        string name = 1;
+        string timestamp_col = 2;
+        string identifier_col = 3;
+        repeated Field data_columns = 4;
+
+        enum Kind {
+            TIMESTAMP = 0;
+            SYMBOL = 1;
+            FLOAT = 2;
+        }
+        message Field {
+            string name = 1;
+            Kind kind = 2;
+        }
+    }
+}

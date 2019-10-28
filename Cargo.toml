@@ -1,0 +1,2 @@
+[workspace]
+members = ["mcp-core","mcp-c","mcp-py"]
